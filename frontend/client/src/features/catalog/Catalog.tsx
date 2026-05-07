@@ -1,4 +1,5 @@
 import type { Product } from "../../app/models/product";
+import  { Button } from "@mui/material";
 
 type Props = {
   products: Product[],
@@ -11,7 +12,7 @@ export default function Catalog({ products, addProduct }: Props) {
       <ul>{products.map(x => (
         <li key={x.id}>{x.name} - {x.price}</li>))}
       </ul>
-      <button onClick={addProduct}>Add a jawn</button>
+      <Button variant='contained' onClick={addProduct}>Add a jawn</Button>
     </>
   )
 }

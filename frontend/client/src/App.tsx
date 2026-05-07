@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Product } from "../src/app/models/product"
 import Catalog from "./features/catalog/Catalog"
+import {Container, Typography} from "@mui/material"
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
@@ -27,10 +28,10 @@ function App() {
   }
 
   return (
-    <div>
-      <h1 style={{ fontSize: '1.6rem' }}>Da' Store</h1>
-      <Catalog products={products} />
-    </div>
+    <Container>
+      <Typography variant='h4'>Da' Store</Typography>
+      <Catalog products={products} addProduct={addProduct} />
+    </Container>
   )
 }
 
