@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import type { Product } from "../src/app/models/product"
 import Catalog from "./features/catalog/Catalog"
-import {Box, Button, Container, Typography} from "@mui/material"
+import { Container } from "@mui/material"
+import NavBar from "../src/app/layout/NavBar"
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
@@ -12,28 +13,18 @@ function App() {
       .then(data => setProducts(data))
   }, [])
 
-  const addProduct = () => {
-    setProducts(prevState => [...prevState,
-    {
-      id: prevState.length + 1,
-      name: 'product' + (prevState.length + 1),
-      price: (prevState.length * 100) + 100,
-      quantityInStock: 100,
-      description: 'This is product' + (prevState.length + 1),
-      pictureUrl: 'https://picsum.photo/150',
-      type: 'test',
-      brand: 'test'
-    }])
-  }
 
   return (
-    <Container maxWidth='xl'>
-      <Box sx={{display:'flex', justifyContent:'center', gap:3,  marginY:3}}>
-        <Typography variant='h4'>Da' Store</Typography>
-        <Button variant='contained' onClick={addProduct}>Add a jawn</Button>
-      </Box>
-      <Catalog products={products} />
-    </Container>
+    <>
+      <NavBar />
+      <Container maxWidth='xl' sx={{mt:14}}>
+        {/* <Box sx={{display:'flex', justifyContent:'center', gap:3,  marginY:3}}> */}
+        {/*   <Typography variant='h4'>Da Store</Typography> */}
+        {/*   <Button variant='contained' onClick={addProduct}>Add a jawn</Button> */}
+        {/* </Box> */}
+        <Catalog products={products} />
+      </Container>
+    </>
   )
 }
 

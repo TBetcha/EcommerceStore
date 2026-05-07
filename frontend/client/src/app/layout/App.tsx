@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <h1 style={{ fontSize: '1.6rem' }}>Da' Store</h1>
+      <h1 style={{ fontSize: '1.6rem' }}>Da Store</h1>
       <ul>{products.map(x => (
         <li>{x.name} - {x.price}</li>))}
       </ul>
