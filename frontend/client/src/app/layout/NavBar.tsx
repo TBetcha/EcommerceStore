@@ -6,12 +6,11 @@ type Props = {
   toggleTheme: () => void
 }
 export default function NavBar({darkMode, toggleTheme}: Props) {
-  // const darkMode = true;
   return (
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6">Da Store</Typography>
-        <IconButton onClick={() => toggleTheme(!darkMode)}>
+        <IconButton onClick={() => toggleTheme()}>
           {darkMode ? <DarkMode /> : <LightMode sx={{color: 'yellow'}} />}
         </IconButton>
       </Toolbar>

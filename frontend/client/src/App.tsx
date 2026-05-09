@@ -6,7 +6,7 @@ import NavBar from "../src/app/layout/NavBar"
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
-  const [ darkMode, setDarkMode ] = useState<bool>(false)
+  const [ darkMode, setDarkMode ] = useState<boolean>(false)
   const paletteType = darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
