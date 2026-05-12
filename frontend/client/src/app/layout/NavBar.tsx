@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, IconButton, ListItem, List, Badge } from '@mui/material'
+import { AppBar, Toolbar, Typography, IconButton, ListItem, List, Badge, Box } from '@mui/material'
 import { LightMode, DarkMode, ShoppingCart } from '@mui/icons-material'
 import { NavLink } from 'react-router-dom'
 
@@ -13,6 +13,19 @@ const rightLinks = [
   { title: 'register', path: '/register' },
 ]
 
+const navStyles = {
+  color: "inherit",
+  typography: "h6",
+  textDecoration: 'none',
+  '&:hover': {
+    color: 'gray.500'
+  },
+  '&.active': {
+    color: '#baecf9'
+  },
+
+}
+
 type Props = {
   darkMode: boolean
   toggleTheme: () => void
@@ -20,44 +33,50 @@ type Props = {
 export default function NavBar({ darkMode, toggleTheme }: Props) {
   return (
     <AppBar position="fixed">
-      <Toolbar>
-        <Typography component={NavLink} to='/' variant="h6">Da Store</Typography>
-        <IconButton onClick={() => toggleTheme()}>
-          {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
-        </IconButton>
-        <List sx={{display:'flex'}}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography component={NavLink} sx={navStyles} to='/' variant="h6">Da Store</Typography>
+          <IconButton onClick={() => toggleTheme()}>
+            {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
+          </IconButton>
+
+        </Box>
+        <List sx={{ display: 'flex' }}>
           {midLinks.map(({ title, path }) => (
             <ListItem
               component={NavLink}
               to={path}
               key={path}
-              sx={{ color: "inherit", typography: "h6" }}
+              sx={navStyles}
             >
               {title.toUpperCase()}
             </ListItem>
           ))}
         </List>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
 
-        <IconButton size="large" sx={{color:'inherit'}}>
-          <Badge>
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
+          <IconButton size="large" sx={{ color: 'inherit' }}>
+            <Badge>
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
 
-        <List sx={{display:'flex'}}>
-          {rightLinks.map(({ title, path }) => (
-            <ListItem
-              component={NavLink}
-              to={path}
-              key={path}
-              sx={{ color: "inherit", typography: "h6" }}
-            >
-              {title.toUpperCase()}
-            </ListItem>
-          ))}
-        </List>
+          <List sx={{ display: 'flex' }}>
+            {rightLinks.map(({ title, path }) => (
+              <ListItem
+                component={NavLink}
+                to={path}
+                key={path}
+                sx={navStyles}
+              >
+                {title.toUpperCase()}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
       </Toolbar>
-    </AppBar>
+    </AppBar >
   );
 }
 
