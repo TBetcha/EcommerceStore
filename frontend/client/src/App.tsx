@@ -4,7 +4,7 @@ import NavBar from "../src/app/layout/NavBar"
 import { Outlet } from "react-router-dom"
 
 function App() {
-  const [ darkMode, setDarkMode ] = useState<boolean>(false)
+  const [ darkMode, setDarkMode ] = useState<boolean>(true)
   const paletteType = darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
