@@ -1,6 +1,7 @@
-import { AppBar, Toolbar, Typography, IconButton, ListItem, List, Badge, Box } from '@mui/material'
+import { AppBar, Toolbar, Typography, IconButton, ListItem, List, Badge, Box, LinearProgress } from '@mui/material'
 import { LightMode, DarkMode, ShoppingCart } from '@mui/icons-material'
 import { NavLink } from 'react-router-dom'
+import { useAppSelector } from '../store/store'
 
 const midLinks = [
   { title: 'catalog', path: '/catalog' },
@@ -31,13 +32,15 @@ type Props = {
   toggleTheme: () => void
 }
 export default function NavBar({ darkMode, toggleTheme }: Props) {
+  const { isLoading } = useAppSelector(state => state.ui)
+
   return (
     <AppBar position="fixed">
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography component={NavLink} sx={navStyles} to='/' variant="h6">Da Store</Typography>
           <IconButton onClick={() => toggleTheme()}>
-            {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
+            {darkMode ? <DarkMode /> : <LightMode sx={{ color: 'yellow' }} />}
           </IconButton>
 
         </Box>
@@ -76,6 +79,11 @@ export default function NavBar({ darkMode, toggleTheme }: Props) {
         </Box>
 
       </Toolbar>
+      {isLoading && (
+        <Box sx={{width:'100%'}}>
+          <LinearProgress color='secondary' />
+        </Box>
+      )}
     </AppBar >
   );
 }
