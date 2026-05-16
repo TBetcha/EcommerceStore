@@ -1,10 +1,15 @@
-import {  useState } from "react"
+import { useState } from "react"
 import { ThemeProvider, Container, createTheme, Box, CssBaseline } from "@mui/material"
 import NavBar from "../src/app/layout/NavBar"
 import { Outlet } from "react-router-dom"
 
+const getInitDarkMode = () => {
+  const storedDarkMode = localStorage.getItem('darkMode')
+  return storedDarkMode ? JSON.parse(storedDarkMode) : true
+}
+
 function App() {
-  const [ darkMode, setDarkMode ] = useState<boolean>(true)
+  const [darkMode, setDarkMode] = useState(getInitDarkMode())
   const paletteType = darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
@@ -18,9 +23,10 @@ function App() {
   })
 
 
-  
+
   const toggleTheme = () => {
-     return setDarkMode(!darkMode)
+    localStorage.setItem('darkMode', JSON.stringify(!darkMode))
+    return setDarkMode(!darkMode)
   }
 
 
@@ -42,7 +48,7 @@ function App() {
           {/*   <Typography variant='h4'>Da Store</Typography> */}
           {/*   <Button variant='contained' onClick={addProduct}>Add a jawn</Button> */}
           {/* </Box> */}
-          <Outlet  />
+          <Outlet />
         </Container>
       </Box>
     </ThemeProvider>
