@@ -29,7 +29,7 @@ public class BuggyController : BaseApiController
     {
         ModelState.AddModelError("Problem1", "This is the first error");
         ModelState.AddModelError("Problem2", "This is the second error");
-        ModelState.AddModelError("Problem3", "This is the first error");
+        ModelState.AddModelError("Problem3", "This is the third error");
         return ValidationProblem();
     }
 
