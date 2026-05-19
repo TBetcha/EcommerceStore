@@ -1,4 +1,5 @@
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,21 +9,37 @@ namespace API.Controllers;
 public class BasketController(StoreContext context) : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<Basket>> GetBasket()
+    public async Task<ActionResult<BasketDto>> GetBasket()
     {
         var basket = await RetrieveBasket();
+        Console.WriteLine($"got basket: {basket?.BasketId}");
 
         if (basket == null) return NoContent();
 
-        return basket;
+        return new BasketDto
+        {
+            BasketId = basket.BasketId,
+            Items = basket.Items.Select(x => new BasketItemDto
+            {
+                ProductId = x.ProductId,
+                Name = x.Product.Name,
+                Price = x.Product.Price,
+                Brand = x.Product.Brand,
+                Type = x.Product.Type,
+                PictureUrl = x.Product.PictureUrl,
+                Quantity = x.Quantity
+            }).ToList()
+        };
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddItemToBasket(int prodId, int quantity)
+    public async Task<ActionResult> AddItemToBasket(int productId, int quantity)
     {
+        Console.WriteLine($"Looking for {productId}...");
         var basket = await RetrieveBasket();
         basket ??= CreateBasket();
-        var product = await context.Products.FindAsync(prodId);
+        Console.WriteLine($"created basket in add item: {basket}");
+        var product = await context.Products.FindAsync(productId);
 
         if (product == null) return BadRequest("Problem adding item to basket");
 
@@ -48,6 +65,7 @@ public class BasketController(StoreContext context) : BaseApiController
 
     private async Task<Basket?> RetrieveBasket()
     {
+        Console.WriteLine("looking for basket");
         return await context.Baskets
           .Include(x => x.Items)
           .ThenInclude(x => x.Product)
