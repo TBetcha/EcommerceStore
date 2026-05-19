@@ -1,0 +1,72 @@
+using API.Data;
+using API.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Controllers;
+
+public class BasketController(StoreContext context) : BaseApiController
+{
+    [HttpGet]
+    public async Task<ActionResult<Basket>> GetBasket()
+    {
+        var basket = await RetrieveBasket();
+
+        if (basket == null) return NoContent();
+
+        return basket;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddItemToBasket(int prodId, int quantity)
+    {
+        var basket = await RetrieveBasket();
+        basket ??= CreateBasket();
+        var product = await context.Products.FindAsync(prodId);
+
+        if (product == null) return BadRequest("Problem adding item to basket");
+
+        basket.AddItem(product, quantity);
+        var result = await context.SaveChangesAsync() > 0;
+
+        if (result) return CreatedAtAction(nameof(GetBasket), basket);
+
+        return BadRequest("Problem updating basket");
+    }
+
+
+    [HttpDelete]
+    public async Task<ActionResult> RemoveBasketItem(int prodId, int quantity)
+    {
+        //get basket
+        //create basket
+        //get prod
+        //add item to basket
+        //save changes
+        return StatusCode(201);
+    }
+
+    private async Task<Basket?> RetrieveBasket()
+    {
+        return await context.Baskets
+          .Include(x => x.Items)
+          .ThenInclude(x => x.Product)
+          .FirstOrDefaultAsync(x => x.BasketId == Request.Cookies["basketId"]);
+    }
+
+    private Basket CreateBasket()
+    {
+        var basketId = Guid.NewGuid().ToString();
+        var cookieOptions = new CookieOptions
+        {
+            IsEssential = true,
+            Expires = DateTime.UtcNow.AddDays(30)
+        };
+        Response.Cookies.Append("basketId", basketId, cookieOptions);
+        var basket = new Basket { BasketId = basketId };
+        context.Baskets.Add(basket);
+
+        return basket;
+    }
+}
+
