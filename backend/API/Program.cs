@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
 app.UseDeveloperExceptionPage();
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
+    opt.AllowAnyHeader().AllowCredentials().AllowAnyMethod().WithOrigins("https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001");
 });
 
 app.UseHttpsRedirection();

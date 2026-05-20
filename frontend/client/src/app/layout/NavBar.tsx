@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, IconButton, ListItem, List, Badge, Box, LinearProgress } from '@mui/material'
 import { LightMode, DarkMode, ShoppingCart } from '@mui/icons-material'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../store/store'
 import { setDarkMode } from './uiSlice'
 
@@ -56,7 +56,7 @@ export default function NavBar() {
         </List>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
 
-          <IconButton size="large" sx={{ color: 'inherit' }}>
+          <IconButton component={Link} to='/basket' size="large" sx={{ color: 'inherit' }}>
             <Badge>
               <ShoppingCart />
             </Badge>
@@ -78,7 +78,7 @@ export default function NavBar() {
 
       </Toolbar>
       {isLoading && (
-        <Box sx={{width:'100%'}}>
+        <Box sx={{ width: '100%' }}>
           <LinearProgress color='secondary' />
         </Box>
       )}
