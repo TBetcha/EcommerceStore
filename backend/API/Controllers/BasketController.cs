@@ -1,6 +1,7 @@
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,20 +17,7 @@ public class BasketController(StoreContext context) : BaseApiController
 
         if (basket == null) return NoContent();
 
-        return new BasketDto
-        {
-            BasketId = basket.BasketId,
-            Items = basket.Items.Select(x => new BasketItemDto
-            {
-                ProductId = x.ProductId,
-                Name = x.Product.Name,
-                Price = x.Product.Price,
-                Brand = x.Product.Brand,
-                Type = x.Product.Type,
-                PictureUrl = x.Product.PictureUrl,
-                Quantity = x.Quantity
-            }).ToList()
-        };
+        return basket.ToDto();
     }
 
     [HttpPost]
@@ -46,7 +34,7 @@ public class BasketController(StoreContext context) : BaseApiController
         basket.AddItem(product, quantity);
         var result = await context.SaveChangesAsync() > 0;
 
-        if (result) return CreatedAtAction(nameof(GetBasket), basket);
+        if (result) return CreatedAtAction(nameof(GetBasket), basket.ToDto());
 
         return BadRequest("Problem updating basket");
     }
