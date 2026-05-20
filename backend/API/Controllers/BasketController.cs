@@ -21,7 +21,7 @@ public class BasketController(StoreContext context) : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddItemToBasket(int productId, int quantity)
+    public async Task<ActionResult<BasketDto>> AddItemToBasket(int productId, int quantity)
     {
         Console.WriteLine($"Looking for {productId}...");
         var basket = await RetrieveBasket();
@@ -41,14 +41,18 @@ public class BasketController(StoreContext context) : BaseApiController
 
 
     [HttpDelete]
-    public async Task<ActionResult> RemoveBasketItem(int prodId, int quantity)
+    public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
     {
-        //get basket
-        //create basket
-        //get prod
-        //add item to basket
-        //save changes
-        return StatusCode(201);
+        var basket = await RetrieveBasket();
+
+        if (basket == null) return BadRequest("unable to get basket");
+
+        basket.RemoveItem(productId, quantity);
+        var result = await context.SaveChangesAsync() > 0;
+
+        if (result) return Ok();
+
+        return BadRequest("Problem updating basket");
     }
 
     private async Task<Basket?> RetrieveBasket()
