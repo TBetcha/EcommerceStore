@@ -1,9 +1,12 @@
 import { Box, Typography, Divider, Button, TextField, Paper } from "@mui/material";
 import { currencyFormat } from "../../../lib/util";
+import { useFetchBasketQuery } from "../../../features/basket/basketApi";
+import type { Item } from "../../models/basket";
 
 export default function OrderSummary() {
-  const subtotal = 0;
-  const deliveryFee = 0;
+  const { data: basket } = useFetchBasketQuery()
+  const subtotal = basket?.items.reduce((sum: number, item: Item) => sum + item.quantity * item.price, 0) ?? 0
+  const deliveryFee = subtotal > 10000 ? 0 : 500;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "lg", mx: "auto" }}>
