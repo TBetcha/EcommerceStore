@@ -7,7 +7,9 @@ export default function BasketPage() {
   const { data, isLoading } = useFetchBasketQuery()
 
   if (isLoading) return <Typography>Loading basket...</Typography>
-  if (!data) return <Typography variant="h3">Your basket is empty</Typography>
+
+  if (!data || data.items.length === 0) return <Typography variant="h3">Your basket is empty</Typography>
+
   return (
     <Grid container spacing={2}>
       <Grid size={8}>
