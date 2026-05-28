@@ -3,6 +3,7 @@ using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using API.RequestHelpers;
 
 namespace API.Controllers;
 
@@ -19,9 +20,14 @@ public class ProductsController(StoreContext context) : ControllerBase
 
 {
     [HttpGet]
-    public async Task<ActionResult<List<Product>>> GetProducts(string orderBy)
+    public async Task<ActionResult<List<Product>>> GetProducts([FromQuery]ProductParams productParams)
     {
-        var query = context.Products.Sort(orderBy).AsQueryable();
+        var query = context.Products
+          .Sort(productParams.OrderBy)
+          .Search(productParams.SearchTerm)
+          .Filter(productParams.Brands, productParams.Types)
+          .AsQueryable();
+
         return await query.ToListAsync();
     }
 
