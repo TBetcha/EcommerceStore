@@ -20,7 +20,7 @@ public class ProductsController(StoreContext context) : ControllerBase
 
 {
     [HttpGet]
-    public async Task<ActionResult<List<Product>>> GetProducts([FromQuery]ProductParams productParams)
+    public async Task<ActionResult<List<Product>>> GetProducts([FromQuery] ProductParams productParams)
     {
         var query = context.Products
           .Sort(productParams.OrderBy)
@@ -28,7 +28,10 @@ public class ProductsController(StoreContext context) : ControllerBase
           .Filter(productParams.Brands, productParams.Types)
           .AsQueryable();
 
-        return await query.ToListAsync();
+        var products = await PagedList<Product>.ToPagedList(query, productParams.PageNumber, productParams.PageSize);
+        Response.AddPaginationHeader(products.Metadata);
+
+        return products;
     }
 
     [HttpGet("{id}")]
