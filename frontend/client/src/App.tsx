@@ -1,6 +1,6 @@
 import { ThemeProvider, Container, createTheme, Box, CssBaseline } from "@mui/material"
 import NavBar from "../src/app/layout/NavBar"
-import { Outlet } from "react-router-dom"
+import { Outlet, ScrollRestoration } from "react-router-dom"
 import { useAppSelector } from "./app/store/store"
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+    <ScrollRestoration />
       <CssBaseline />
       <NavBar />
       <Box

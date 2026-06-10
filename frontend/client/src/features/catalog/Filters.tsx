@@ -1,9 +1,8 @@
-import { Box, Paper, Typography } from "@mui/material"
-import { useFetchFiltersQuery } from "./catalogApi"
+import { Box, Button, Paper } from "@mui/material"
 import Search from "./Search"
 import { useAppSelector, useAppDispatch } from "../../app/store/store"
 import RadioButtonGroup from "../../app/shared/components/RadioButtonGroup"
-import { setBrands, setOrderBy, setTypes } from "./catalogSlice"
+import { resetParams, setBrands, setOrderBy, setTypes } from "./catalogSlice"
 import CheckboxButtons from "../../app/shared/components/CheckboxButtons"
 
 const sortOptions = [
@@ -12,12 +11,14 @@ const sortOptions = [
   { value: 'PriceInc', label: 'Price: Low to high' }
 ]
 
-export default function Filters() {
-  const { data } = useFetchFiltersQuery()
+type Props = {
+  filtersData: { brands: string[], types: string[] }
+}
+
+export default function Filters({ filtersData: data }: Props) {
   const { orderBy, types, brands } = useAppSelector(state => state.catalog)
   const dispatch = useAppDispatch()
 
-  if (!data?.brands || !data.types) return <Typography variant='h3'>Loading...</Typography>
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -46,17 +47,7 @@ export default function Filters() {
           onChange={(items: string[]) => dispatch(setTypes(items))}
         />
       </Paper>
-      {/* <Paper sx={{ p: 3 }}> */}
-      {/*   <FormGroup> */}
-      {/*     {data && data.types.map(item => ( */}
-      {/*       <FormControlLabel */}
-      {/*         key={item} */}
-      {/*         control={<Checkbox color='secondary' sx={{ py: 0.7, fontSize: 40 }} />} */}
-      {/*         label={item} */}
-      {/*       /> */}
-      {/*     ))} */}
-      {/*   </FormGroup> */}
-      {/* </Paper> */}
+      <Button onClick={() => dispatch(resetParams())}>Reset Filters</Button>
     </Box>
   )
 }
