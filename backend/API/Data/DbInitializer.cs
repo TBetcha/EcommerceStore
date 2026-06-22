@@ -5,22 +5,22 @@ namespace API.Data;
 
 public class DbInitializer
 {
-    public static void InitDb(WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<StoreContext>()
-          ?? throw new Exception("Failed to get StoreContext from service provider.");
+  public static void InitDb(WebApplication app)
+  {
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<StoreContext>()
+      ?? throw new Exception("Failed to get StoreContext from service provider.");
 
-        SeedData(context);
-    }
+    SeedData(context);
+  }
 
-    private static void SeedData(StoreContext context)
-    {
-        context.Database.Migrate();
+  private static void SeedData(StoreContext context)
+  {
+    context.Database.Migrate();
 
-        if (context.Products.Any()) return;
+    if (context.Products.Any()) return;
 
-        var products = new List<Product>
+    var products = new List<Product>
         {
                 new()
                 {
@@ -219,7 +219,7 @@ public class DbInitializer
                     QuantityInStock = 100
                 }
       };
-        context.Products.AddRange(products);
-        context.SaveChanges();
-    }
+    context.Products.AddRange(products);
+    context.SaveChanges();
+  }
 }

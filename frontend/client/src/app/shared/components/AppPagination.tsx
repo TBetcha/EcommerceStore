@@ -1,5 +1,5 @@
-import { Box, Pagination, Typography } from "@mui/material";
-import type { Pagination as PaginationType } from "../../models/pagination";
+import { Box, Pagination, Typography } from '@mui/material'
+import type { Pagination as PaginationType } from '../../models/pagination'
 
 type Props = {
   metadata: PaginationType
@@ -12,7 +12,14 @@ export default function AppPagination({ metadata, onPageChange }: Props) {
   const endItem = Math.min(currentPage * pageSize, totalCount)
 
   return (
-    <Box sx={{ display: 'flex', justifyContext: 'space-between', alignItems: 'center', marginTop: 3 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContext: 'space-between',
+        alignItems: 'center',
+        marginTop: 3,
+      }}
+    >
       <Typography>
         displaying {startItem}-{endItem} of {totalCount} items
       </Typography>
@@ -26,4 +33,3 @@ export default function AppPagination({ metadata, onPageChange }: Props) {
     </Box>
   )
 }
-

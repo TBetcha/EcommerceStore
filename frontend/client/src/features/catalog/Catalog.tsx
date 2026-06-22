@@ -1,14 +1,13 @@
-import { Grid, Typography } from "@mui/material";
-import ProductList from "./ProductList";
-import { useFetchFiltersQuery, useFetchProductsQuery } from "./catalogApi";
-import Filters from "./Filters";
-import { useAppDispatch, useAppSelector } from "../../app/store/store";
-import AppPagination from "../../app/shared/components/AppPagination";
-import { setPageNumber } from "./catalogSlice";
-
+import { Grid, Typography } from '@mui/material'
+import ProductList from './ProductList'
+import { useFetchFiltersQuery, useFetchProductsQuery } from './catalogApi'
+import Filters from './Filters'
+import { useAppDispatch, useAppSelector } from '../../app/store/store'
+import AppPagination from '../../app/shared/components/AppPagination'
+import { setPageNumber } from './catalogSlice'
 
 export default function Catalog() {
-  const productParams = useAppSelector(state => state.catalog)
+  const productParams = useAppSelector((state) => state.catalog)
   const { data, isLoading } = useFetchProductsQuery(productParams)
   const { data: filtersData, isLoading: filtersLoading } = useFetchFiltersQuery()
   const dispatch = useAppDispatch()
@@ -17,7 +16,7 @@ export default function Catalog() {
 
   return (
     <Grid container spacing={4}>
-      <Grid size={3} >
+      <Grid size={3}>
         <Filters filtersData={filtersData} />
       </Grid>
       <Grid size={9}>
@@ -32,10 +31,10 @@ export default function Catalog() {
               }}
             />
           </>
-        ) :
-          <Typography variant="h5">There are no results for this filter</Typography>}
+        ) : (
+          <Typography variant="h5">There are no results for this filter</Typography>
+        )}
       </Grid>
     </Grid>
   )
 }
-
